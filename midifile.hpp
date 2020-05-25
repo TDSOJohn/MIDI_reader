@@ -42,6 +42,11 @@ public;
 private:
     bool            parseFile(const std::string& sFileName);
 
+public:
+    std::vector<MidiTrack> vecTracks;
+    uint32_t m_nTempo =0;
+    uint32_t m_nBPM =0;
+
 private:
     enum EventName : uint8_t
     {
