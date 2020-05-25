@@ -1,11 +1,10 @@
-#include <iostream>
 
-#include "midifile.hpp"
+#include "midiFile.hpp"
 
 
 MidiFile::MidiFile(const std::string& sFileName)
 {
-    parseFile(sFilename)
+    parseFile(sFileName);
 }
 
 bool MidiFile::parseFile(const std::string& sFileName)
@@ -27,7 +26,7 @@ bool MidiFile::parseFile(const std::string& sFileName)
         return ((n >> 8) | (n << 8));
     };
 
-    auto readString = [&ifs](uint32_t nlength)
+    auto readString = [&ifs](uint32_t nLength)
     {
         std::string s;
         for (uint32_t i = 0; i <nLength; i++) s += ifs.get();
@@ -95,7 +94,7 @@ bool MidiFile::parseFile(const std::string& sFileName)
         bool bEndOfTrack = false;
         int8_t nPreviousStatus = 0;
 
-        vetTracks.push_back(MidiTrack());
+        vecTracks.push_back(MidiTrack());
 
         while(!ifs.eof() && !bEndOfTrack)
         {
@@ -130,9 +129,9 @@ bool MidiFile::parseFile(const std::string& sFileName)
                 uint8_t nNoteID = ifs.get();
                 uint8_t nNoteVelocity = ifs.get();
                 if(nNoteVelocity == 0)
-                    vecTracks[nChunk].vecEvents.push_back({ MidiEvent::Type::noteOff, nNoteID, nNoteVelocity, nStatusTimeDelta });
+                    vecTracks[nChunk].vecEvents.push_back( MidiEvent(MidiEvent::Type::noteOff, nNoteID, nNoteVelocity, nStatusTimeDelta));
                 else
-                    vecTracks[nChunk].vecEvents.push_back({ MidiEvent::Type::noteOn, nNoteID, nNoteVelocity, nStatusTimeDelta });
+                    vecTracks[nChunk].vecEvents.push_back( MidiEvent(MidiEvent::Type::noteOn, nNoteID, nNoteVelocity, nStatusTimeDelta));
             }
             else if((nStatus & 0xF0) == EventName::voiceAftertouch)
             {
