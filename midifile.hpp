@@ -1,6 +1,12 @@
 #ifndef midifile_hpp
 #define midifile_hpp
 
+#include <iostream>
+#include <fstream>
+#include <cstdint>
+#include <vector>
+#include <array>
+
 
 struct MidiEvent
 {
@@ -10,6 +16,7 @@ struct MidiEvent
         noteOn,
         other
     } event;
+    
     uint8_t nKey =0;
     uint8_t nVelocity =0;
     uint32_t nWallTick =0;
@@ -31,12 +38,12 @@ struct MidiTrack
     std::vector<MidiEvent>  vecEvents;
     std::vector<MidiNote>   vecNotes;
     uint8_t                 nMaxNote =64;
-    uint8_t                 mMinNote =64;
+    uint8_t                 nMinNote =64;
 };
 
 class MidiFile
 {
-public;
+public:
                     MidiFile(const std::string& sFileName);
 
 private:
@@ -79,6 +86,6 @@ private:
         metaKeySignature = 0x59,
         metaSequencerSpecific = 0x7F
     };
-}
+};
 
 #endif
